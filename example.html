@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>palette-map.js</title>
+        <style type="text/css">
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+
+        </style>
+    </head>
+    <body>
+        <canvas id="map" width="500" height="500"></canvas>
+        <img id="img" src="islands.png" width="274" height="235" />
+    </body>
+    <script type="text/javascript">
+        // example usage of palette-map.js
+        var canvas = document.getElementById('map');
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#590';
+        ctx.fillRect(0, 0, 500, 500);
+
+        var worker = new Worker('palette-map.js');
+
+        console.log(ctx);
+
+        worker.postMessage({
+            r: [],
+            g: [],
+            b: [],
+            pixels: ctx.getImageData(0, 0, canvas.width, canvas.height).data
+        });
+                
+        worker.addEventListener('message', function(e) {
+          console.log('Worker said: ', e.data);
+        }, false);
+
+    </script>
+</html>
