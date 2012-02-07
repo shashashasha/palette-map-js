@@ -1,0 +1,8 @@
+
+palette-map.js
+
+Allows you to map one set of colors to an existing Canvas, based on the pixel data contained.
+
+This is similar to Actionscript's BitmapData.paletteMap method
+
+An example is here:
