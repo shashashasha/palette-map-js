@@ -7,3 +7,25 @@ This is similar to Actionscript's BitmapData.paletteMap method
 
 An example is here:
 http://shashashasha.github.com/palette-map-js/
+
+Usage:
+// create the web worker
+var paletteMapper = new Worker('palette-map.js');
+var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+// pass it the arrays of colors to be mapped
+paletteMapper.postMessage({
+	// possible modes include scaled-rgb, scaled-rgba, 
+	mode: 'scaled-rgb',
+	r: [an Array of values to be mapped to the Red channel],
+	g: [an Array of values to be mapped to the Green channel],
+	b: [an Array of values to be mapped to the Blue channel],
+	imageData: imageData
+});
+
+// place the pixels back
+paletteMapper.addEventListener('message', function(e) {
+    if (e.data.imageData) {
+        ctx.putImageData(e.data.imageData, 0, 0);
+    }
+}, false);

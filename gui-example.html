@@ -22,9 +22,9 @@
             margin: 30px auto;
             padding: 30px;
             background: white;
-                  -webkit-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1);
-                     -moz-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
-                          box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
+          -webkit-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1);
+             -moz-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
+                  box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
         }
 
         #description {
@@ -88,12 +88,12 @@
         };
 
         renderer.paletteMap = function() {
-                // adding a lame last color to this scaled array
-                      renderer.r = [renderer.color0[0], renderer.color1[0], renderer.color2[0]];
-                      renderer.g = [renderer.color0[1], renderer.color1[1], renderer.color2[1]];
-                      renderer.b = [renderer.color0[2], renderer.color1[2], renderer.color2[2]];
+            // adding a lame last color to this scaled array
+            renderer.r = [renderer.color0[0], renderer.color1[0], renderer.color2[0]];
+            renderer.g = [renderer.color0[1], renderer.color1[1], renderer.color2[1]];
+            renderer.b = [renderer.color0[2], renderer.color1[2], renderer.color2[2]];
 
-                      // the palette mapping
+            // the palette mapping
             worker.postMessage({
                 mode: 'scaled-gray',
                 r: renderer.r,
