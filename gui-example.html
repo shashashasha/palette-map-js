@@ -13,84 +13,87 @@
         }
 
         a {
-        	color: black;
-        	font-weight: bold;	
+            color: black;
+            font-weight: bold;  
         }
 
         #container {
-        	width: 590px;
-        	margin: 30px auto;
-        	padding: 30px;
-        	background: white;
-				  -webkit-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1);
-				     -moz-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
-				          box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
+            width: 590px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+                  -webkit-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1);
+                     -moz-box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
+                          box-shadow: 0px 0px 300px rgba(0,0,0, 0.1); 
         }
 
         #description {
-        	float: left;
-        	width: 310px;
+            float: left;
+            width: 310px;
         }
 
         #gui-container {
-        	float: right;
-        	height: 120px;
+            float: right;
+            height: 120px;
         }
 
         h1 {
-        	margin: 0 0 10px 0;
+            margin: 0 0 10px 0;
         }
 
         </style>
     </head>
     <body>
-    	<div id="container">
-    		<div id="description">
-    			<h1>palette-map.js</h1>
-    			<a href="https://github.com/shashashasha/palette-map-js">palette-map.js</a> is a way to quickly map canvas imageData onto a new palette, based on Actionscript's paletteMap method. 
-    		</div>
-    		
-    		<div id="gui-container" class="info">
-    		</div>
+      <a href="https://github.com/shashashasha/palette-map-js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+        <div id="container">
+            <div id="description">
+                <h1>palette-map.js</h1>
+                <a href="https://github.com/shashashasha/palette-map-js">palette-map.js</a> is a way to quickly map canvas imageData onto a new palette, based on Actionscript's paletteMap method. 
+            </div>
+            
+            <div id="gui-container" class="info">
+            </div>
         
         <canvas id="map" width="590" height="280"></canvas>
-        <img id="img" src="world.png" width="590" height="280" onload="renderer.drawImage()" />
+        <img id="img" src="world.png" width="590" height="280" />
         
         <br /><br />
         a thing by <a href="http://twitter.com/shashashasha">sha</a>, color picker ui from <a href="http://workshop.chromeexperiments.com/examples/gui/">dat.GUI</a>.
       </div>
     </body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://dat-gui.googlecode.com/git/build/dat.gui.min.js"></script>
     <script type="text/javascript">
         // example usage of palette-map.js
         var canvas = document.getElementById('map'),
             ctx = canvas.getContext('2d');
             img = document.getElementById('img');
-			            
+                        
         // initialize the web worker
         var worker = new Worker('palette-map.js');
 
         // store the initial colors
         var renderer = {};
-			  renderer.color0 = [ 60, 255, 60 ]; // RGB array
-			  renderer.color1 = [ 0, 255, 255 ]; // RGB array
-			  renderer.color2 = [ 0, 128, 255 ]; // RGB array
+        renderer.color0 = [ 60, 255, 60 ]; // RGB array
+        renderer.color1 = [ 0, 255, 255 ]; // RGB array
+        renderer.color2 = [ 0, 128, 255 ]; // RGB array
 
-			  // draw the image div and render our first paletteMap
-			  renderer.drawImage = function() {
+        // draw the image div and render our first paletteMap
+        renderer.drawImage = function() {
             ctx.drawImage(img, 0, 0);
 
             renderer.imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             renderer.paletteMap();
-			  };
+        };
 
         renderer.paletteMap = function() {
-        		// adding a lame last color to this scaled array
-					  renderer.r = [renderer.color0[0], renderer.color1[0], renderer.color2[0]];
-					  renderer.g = [renderer.color0[1], renderer.color1[1], renderer.color2[1]];
-					  renderer.b = [renderer.color0[2], renderer.color1[2], renderer.color2[2]];
+                // adding a lame last color to this scaled array
+                      renderer.r = [renderer.color0[0], renderer.color1[0], renderer.color2[0]];
+                      renderer.g = [renderer.color0[1], renderer.color1[1], renderer.color2[1]];
+                      renderer.b = [renderer.color0[2], renderer.color1[2], renderer.color2[2]];
 
-					  // the palette mapping
+                      // the palette mapping
             worker.postMessage({
                 mode: 'scaled-gray',
                 r: renderer.r,
@@ -108,20 +111,25 @@
         };
 
         /*
-        	Using dat.GUI for color pickers
-        	http://workshop.chromeexperiments.com/examples/gui/
+            Using dat.GUI for color pickers
+            http://workshop.chromeexperiments.com/examples/gui/
         */
 
         // using dat.gui to control colors
-			  var gui = new dat.GUI({ autoPlace: false });
+        var gui = new dat.GUI({ autoPlace: false });
 
-			  // create ui to pick colors
-				gui.addColor(renderer, 'color0').onChange(renderer.paletteMap);
-			  gui.addColor(renderer, 'color1').onChange(renderer.paletteMap);
-			  gui.addColor(renderer, 'color2').onChange(renderer.paletteMap);
+        // create ui to pick colors
+        gui.addColor(renderer, 'color0').onChange(renderer.paletteMap);
+        gui.addColor(renderer, 'color1').onChange(renderer.paletteMap);
+        gui.addColor(renderer, 'color2').onChange(renderer.paletteMap);
 
-			  // place dat gui on the page
-				var customContainer = document.getElementById('gui-container');
-				customContainer.appendChild(gui.domElement);
+        // place dat gui on the page
+        var customContainer = document.getElementById('gui-container');
+        customContainer.appendChild(gui.domElement);
+
+        // wait til the image loads
+        $(window).load(function() {
+            renderer.drawImage();    
+        });
     </script>
 </html>
